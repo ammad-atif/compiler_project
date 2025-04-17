@@ -21,3 +21,14 @@ print a
  end
 end
 
+@loop a gt b
+begin
+    @? a gt b
+    yes
+    begin
+    a <- 5 plus 5
+    print a
+    end
+    
+end
+

@@ -75,6 +75,7 @@
     using namespace std;
     extern int yyparse();
     extern int yylex();
+    extern int yylineno;
     extern FILE* yyin;
 
     void yyerror(const char* err);
@@ -87,7 +88,7 @@
         #define debugBison(a)
     #endif
 
-#line 91 "bison.tab.c"
+#line 92 "bison.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -139,14 +140,16 @@ enum yysymbol_kind_t
   YYSYMBOL_tok_if_else = 21,               /* tok_if_else  */
   YYSYMBOL_tok_end = 22,                   /* tok_end  */
   YYSYMBOL_tok_begin = 23,                 /* tok_begin  */
-  YYSYMBOL_YYACCEPT = 24,                  /* $accept  */
-  YYSYMBOL_root = 25,                      /* root  */
-  YYSYMBOL_print = 26,                     /* print  */
-  YYSYMBOL_assignment = 27,                /* assignment  */
-  YYSYMBOL_expression = 28,                /* expression  */
-  YYSYMBOL_term = 29,                      /* term  */
-  YYSYMBOL_if_else = 30,                   /* if_else  */
-  YYSYMBOL_bool_expression = 31            /* bool_expression  */
+  YYSYMBOL_tok_while_loop = 24,            /* tok_while_loop  */
+  YYSYMBOL_YYACCEPT = 25,                  /* $accept  */
+  YYSYMBOL_root = 26,                      /* root  */
+  YYSYMBOL_print = 27,                     /* print  */
+  YYSYMBOL_assignment = 28,                /* assignment  */
+  YYSYMBOL_expression = 29,                /* expression  */
+  YYSYMBOL_term = 30,                      /* term  */
+  YYSYMBOL_if_else = 31,                   /* if_else  */
+  YYSYMBOL_bool_expression = 32,           /* bool_expression  */
+  YYSYMBOL_while_loop = 33                 /* while_loop  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -472,21 +475,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  17
+#define YYFINAL  20
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   59
+#define YYLAST   63
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  24
+#define YYNTOKENS  25
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  8
+#define YYNNTS  9
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  25
+#define YYNRULES  27
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  55
+#define YYNSTATES  62
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   278
+#define YYMAXUTOK   279
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -527,16 +530,16 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    56,    56,    57,    58,    59,    62,    65,    66,    67,
-      68,    72,    73,    74,    75,    76,    77,    80,    81,    84,
-      85,    88,    89,    90,    91,    92
+       0,    59,    59,    60,    61,    62,    63,    66,    69,    70,
+      71,    72,    76,    77,    78,    79,    80,    81,    84,    85,
+      88,    89,    92,    93,    94,    95,    96,   100
 };
 #endif
 
@@ -557,8 +560,9 @@ static const char *const yytname[] =
   "tok_assignment_operator_l", "tok_assignment_operator_r", "tok_mult",
   "tok_div", "tok_mod", "tok_plus", "tok_minus", "tok_yes", "tok_no",
   "tok_gt", "tok_gt_o_eq", "tok_lt", "tok_lt_o_eq", "tok_eq",
-  "tok_if_else", "tok_end", "tok_begin", "$accept", "root", "print",
-  "assignment", "expression", "term", "if_else", "bool_expression", YY_NULLPTR
+  "tok_if_else", "tok_end", "tok_begin", "tok_while_loop", "$accept",
+  "root", "print", "assignment", "expression", "term", "if_else",
+  "bool_expression", "while_loop", YY_NULLPTR
 };
 
 static const char *
@@ -568,7 +572,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-12)
+#define YYPACT_NINF (-14)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -582,12 +586,13 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       2,    -1,    33,   -12,     1,    38,    43,     2,     2,     7,
-     -12,     2,   -12,    30,    40,     8,    32,   -12,   -12,   -12,
-      44,    17,    17,    17,    17,    17,   -12,   -12,   -12,    20,
-     -12,    45,    46,    47,    48,    49,    24,   -12,   -12,   -12,
-     -12,    28,    28,   -12,   -12,   -12,   -12,   -12,     2,    34,
-      39,    35,     2,    37,   -12
+       3,    -1,    19,   -14,     2,    21,    21,    46,     3,     3,
+       8,   -14,     3,     3,   -14,    35,    43,    12,    34,    26,
+     -14,   -14,   -14,    48,    18,    18,    18,    18,    18,   -14,
+     -14,   -14,   -14,    25,   -14,    49,    50,    51,    52,    53,
+      27,     3,   -14,   -14,   -14,   -14,    33,    33,   -14,   -14,
+     -14,   -14,   -14,     3,    36,    37,   -14,    45,    38,     3,
+      40,   -14
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -595,24 +600,25 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,    18,    17,     0,     0,     0,     2,     2,     0,
-      11,     2,     6,     0,     0,     0,     0,     1,     3,     4,
-       0,     0,     0,     0,     0,     0,     5,    18,     8,     7,
-      10,     0,     0,     0,     0,     0,     0,     9,    14,    15,
-      16,    12,    13,    21,    23,    22,    24,    25,     2,     0,
-      19,     0,     2,     0,    20
+       2,     0,    19,    18,     0,     0,     0,     0,     2,     2,
+       0,    12,     2,     2,     7,     0,     0,     0,     0,     0,
+       1,     3,     4,     0,     0,     0,     0,     0,     0,     5,
+       6,    19,     9,     8,    11,     0,     0,     0,     0,     0,
+       0,     2,    10,    15,    16,    17,    13,    14,    22,    24,
+      23,    25,    26,     2,     0,     0,    27,    20,     0,     2,
+       0,    21
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -12,    -7,   -12,   -12,   -11,   -12,   -12,   -12
+     -14,    -8,   -14,   -14,   -13,   -14,   -14,    57,   -14
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     6,     7,     8,     9,    10,    11,    16
+       0,     7,     8,     9,    10,    11,    12,    18,    13
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -620,50 +626,53 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      18,    19,    29,    12,    26,     1,     2,     3,     4,    14,
-      38,    39,    40,    41,    42,    20,    21,    22,    23,    24,
-      25,    27,     3,     5,    31,    32,    33,    34,    35,    21,
-      22,    23,    24,    25,    27,     3,    28,    21,    22,    23,
-      13,    49,    15,    17,    30,    53,    36,    48,    37,    43,
-      44,    45,    46,    47,    51,     0,    50,     0,    52,    54
+      21,    22,    33,    14,    29,    30,     1,     2,     3,     4,
+      16,    43,    44,    45,    46,    47,    23,    24,    25,    26,
+      27,    28,    31,     3,     5,    17,    15,     6,    35,    36,
+      37,    38,    39,    54,    24,    25,    26,    27,    28,    31,
+       3,    32,    24,    25,    26,    55,    20,    34,    40,    41,
+      53,    60,    42,    48,    49,    50,    51,    52,    56,    57,
+      58,    59,    61,    19
 };
 
 static const yytype_int8 yycheck[] =
 {
-       7,     8,    13,     4,    11,     3,     4,     5,     6,     8,
-      21,    22,    23,    24,    25,     8,     9,    10,    11,    12,
-      13,     4,     5,    21,    16,    17,    18,    19,    20,     9,
-      10,    11,    12,    13,     4,     5,     6,     9,    10,    11,
-       7,    48,     4,     0,     4,    52,    14,    23,     4,     4,
-       4,     4,     4,     4,    15,    -1,    22,    -1,    23,    22
+       8,     9,    15,     4,    12,    13,     3,     4,     5,     6,
+       8,    24,    25,    26,    27,    28,     8,     9,    10,    11,
+      12,    13,     4,     5,    21,     4,     7,    24,    16,    17,
+      18,    19,    20,    41,     9,    10,    11,    12,    13,     4,
+       5,     6,     9,    10,    11,    53,     0,     4,    14,    23,
+      23,    59,     4,     4,     4,     4,     4,     4,    22,    22,
+      15,    23,    22,     6
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,     4,     5,     6,    21,    25,    26,    27,    28,
-      29,    30,     4,     7,     8,     4,    31,     0,    25,    25,
-       8,     9,    10,    11,    12,    13,    25,     4,     6,    28,
-       4,    16,    17,    18,    19,    20,    14,     4,    28,    28,
-      28,    28,    28,     4,     4,     4,     4,     4,    23,    25,
-      22,    15,    23,    25,    22
+       0,     3,     4,     5,     6,    21,    24,    26,    27,    28,
+      29,    30,    31,    33,     4,     7,     8,     4,    32,    32,
+       0,    26,    26,     8,     9,    10,    11,    12,    13,    26,
+      26,     4,     6,    29,     4,    16,    17,    18,    19,    20,
+      14,    23,     4,    29,    29,    29,    29,    29,     4,     4,
+       4,     4,     4,    23,    26,    26,    22,    22,    15,    23,
+      26,    22
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    24,    25,    25,    25,    25,    26,    27,    27,    27,
-      27,    28,    28,    28,    28,    28,    28,    29,    29,    30,
-      30,    31,    31,    31,    31,    31
+       0,    25,    26,    26,    26,    26,    26,    27,    28,    28,
+      28,    28,    29,    29,    29,    29,    29,    29,    30,    30,
+      31,    31,    32,    32,    32,    32,    32,    33
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     2,     2,     2,     2,     3,     3,     3,
-       3,     1,     3,     3,     3,     3,     3,     1,     1,     6,
-      10,     3,     3,     3,     3,     3
+       0,     2,     0,     2,     2,     2,     2,     2,     3,     3,
+       3,     3,     1,     3,     3,     3,     3,     3,     1,     1,
+       6,    10,     3,     3,     3,     3,     3,     5
 };
 
 
@@ -1127,151 +1136,163 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* root: %empty  */
-#line 56 "bison.y"
+#line 59 "bison.y"
                                                 {debugBison(1);}
-#line 1133 "bison.tab.c"
+#line 1142 "bison.tab.c"
     break;
 
   case 3: /* root: print root  */
-#line 57 "bison.y"
+#line 60 "bison.y"
                                  {debugBison(2);}
-#line 1139 "bison.tab.c"
+#line 1148 "bison.tab.c"
     break;
 
   case 4: /* root: assignment root  */
-#line 58 "bison.y"
+#line 61 "bison.y"
                                  {debugBison(3);}
-#line 1145 "bison.tab.c"
+#line 1154 "bison.tab.c"
     break;
 
   case 5: /* root: if_else root  */
-#line 59 "bison.y"
-                                 {debugBison(4);}
-#line 1151 "bison.tab.c"
-    break;
-
-  case 6: /* print: tok_print tok_identifier  */
 #line 62 "bison.y"
-                                 {debugBison(5);}
-#line 1157 "bison.tab.c"
+                                 {debugBison(4);}
+#line 1160 "bison.tab.c"
     break;
 
-  case 7: /* assignment: tok_identifier tok_assignment_operator_l expression  */
-#line 65 "bison.y"
-                                                                 {debugBison(6);}
-#line 1163 "bison.tab.c"
+  case 6: /* root: while_loop root  */
+#line 63 "bison.y"
+                                  {debugBison(4);}
+#line 1166 "bison.tab.c"
     break;
 
-  case 8: /* assignment: tok_identifier tok_assignment_operator_l tok_string_literal  */
+  case 7: /* print: tok_print tok_identifier  */
 #line 66 "bison.y"
+                                 {debugBison(5);}
+#line 1172 "bison.tab.c"
+    break;
+
+  case 8: /* assignment: tok_identifier tok_assignment_operator_l expression  */
+#line 69 "bison.y"
+                                                                 {debugBison(6);}
+#line 1178 "bison.tab.c"
+    break;
+
+  case 9: /* assignment: tok_identifier tok_assignment_operator_l tok_string_literal  */
+#line 70 "bison.y"
                                                                            {debugBison(7);}
-#line 1169 "bison.tab.c"
+#line 1184 "bison.tab.c"
     break;
 
-  case 9: /* assignment: expression tok_assignment_operator_r tok_identifier  */
-#line 67 "bison.y"
+  case 10: /* assignment: expression tok_assignment_operator_r tok_identifier  */
+#line 71 "bison.y"
                                                                    {debugBison(8);}
-#line 1175 "bison.tab.c"
+#line 1190 "bison.tab.c"
     break;
 
-  case 10: /* assignment: tok_string_literal tok_assignment_operator_r tok_identifier  */
-#line 68 "bison.y"
-                                                                           {debugBison(9);}
-#line 1181 "bison.tab.c"
-    break;
-
-  case 11: /* expression: term  */
+  case 11: /* assignment: tok_string_literal tok_assignment_operator_r tok_identifier  */
 #line 72 "bison.y"
-                                      {debugBison(10);}
-#line 1187 "bison.tab.c"
+                                                                           {debugBison(9);}
+#line 1196 "bison.tab.c"
     break;
 
-  case 12: /* expression: expression tok_plus expression  */
-#line 73 "bison.y"
-                                             {debugBison(11);}
-#line 1193 "bison.tab.c"
-    break;
-
-  case 13: /* expression: expression tok_minus expression  */
-#line 74 "bison.y"
-                                              {debugBison(12);}
-#line 1199 "bison.tab.c"
-    break;
-
-  case 14: /* expression: expression tok_mult expression  */
-#line 75 "bison.y"
-                                             {debugBison(13);}
-#line 1205 "bison.tab.c"
-    break;
-
-  case 15: /* expression: expression tok_div expression  */
+  case 12: /* expression: term  */
 #line 76 "bison.y"
-                                             {debugBison(14);}
-#line 1211 "bison.tab.c"
+                                      {debugBison(10);}
+#line 1202 "bison.tab.c"
     break;
 
-  case 16: /* expression: expression tok_mod expression  */
+  case 13: /* expression: expression tok_plus expression  */
 #line 77 "bison.y"
-                                             {debugBison(15);}
-#line 1217 "bison.tab.c"
+                                             {debugBison(11);}
+#line 1208 "bison.tab.c"
     break;
 
-  case 17: /* term: tok_number_literal  */
+  case 14: /* expression: expression tok_minus expression  */
+#line 78 "bison.y"
+                                              {debugBison(12);}
+#line 1214 "bison.tab.c"
+    break;
+
+  case 15: /* expression: expression tok_mult expression  */
+#line 79 "bison.y"
+                                             {debugBison(13);}
+#line 1220 "bison.tab.c"
+    break;
+
+  case 16: /* expression: expression tok_div expression  */
 #line 80 "bison.y"
-                          {debugBison(16);}
-#line 1223 "bison.tab.c"
+                                             {debugBison(14);}
+#line 1226 "bison.tab.c"
     break;
 
-  case 18: /* term: tok_identifier  */
+  case 17: /* expression: expression tok_mod expression  */
 #line 81 "bison.y"
-                          {debugBison(17);}
-#line 1229 "bison.tab.c"
+                                             {debugBison(15);}
+#line 1232 "bison.tab.c"
     break;
 
-  case 19: /* if_else: tok_if_else bool_expression tok_yes tok_begin root tok_end  */
+  case 18: /* term: tok_number_literal  */
 #line 84 "bison.y"
-                                                                     {debugBison(18);}
-#line 1235 "bison.tab.c"
+                          {debugBison(16);}
+#line 1238 "bison.tab.c"
     break;
 
-  case 20: /* if_else: tok_if_else bool_expression tok_yes tok_begin root tok_end tok_no tok_begin root tok_end  */
+  case 19: /* term: tok_identifier  */
 #line 85 "bison.y"
-                                                                                                    {debugBison(19);}
-#line 1241 "bison.tab.c"
+                          {debugBison(17);}
+#line 1244 "bison.tab.c"
     break;
 
-  case 21: /* bool_expression: tok_identifier tok_gt tok_identifier  */
+  case 20: /* if_else: tok_if_else bool_expression tok_yes tok_begin root tok_end  */
 #line 88 "bison.y"
-                                                      {debugBison(20);}
-#line 1247 "bison.tab.c"
+                                                                     {debugBison(18);}
+#line 1250 "bison.tab.c"
     break;
 
-  case 22: /* bool_expression: tok_identifier tok_lt tok_identifier  */
+  case 21: /* if_else: tok_if_else bool_expression tok_yes tok_begin root tok_end tok_no tok_begin root tok_end  */
 #line 89 "bison.y"
-                                                      {debugBison(21);}
-#line 1253 "bison.tab.c"
+                                                                                                    {debugBison(19);}
+#line 1256 "bison.tab.c"
     break;
 
-  case 23: /* bool_expression: tok_identifier tok_gt_o_eq tok_identifier  */
-#line 90 "bison.y"
-                                                           {debugBison(22);}
-#line 1259 "bison.tab.c"
-    break;
-
-  case 24: /* bool_expression: tok_identifier tok_lt_o_eq tok_identifier  */
-#line 91 "bison.y"
-                                                           {debugBison(23);}
-#line 1265 "bison.tab.c"
-    break;
-
-  case 25: /* bool_expression: tok_identifier tok_eq tok_identifier  */
+  case 22: /* bool_expression: tok_identifier tok_gt tok_identifier  */
 #line 92 "bison.y"
+                                                      {debugBison(20);}
+#line 1262 "bison.tab.c"
+    break;
+
+  case 23: /* bool_expression: tok_identifier tok_lt tok_identifier  */
+#line 93 "bison.y"
+                                                      {debugBison(21);}
+#line 1268 "bison.tab.c"
+    break;
+
+  case 24: /* bool_expression: tok_identifier tok_gt_o_eq tok_identifier  */
+#line 94 "bison.y"
+                                                           {debugBison(22);}
+#line 1274 "bison.tab.c"
+    break;
+
+  case 25: /* bool_expression: tok_identifier tok_lt_o_eq tok_identifier  */
+#line 95 "bison.y"
+                                                           {debugBison(23);}
+#line 1280 "bison.tab.c"
+    break;
+
+  case 26: /* bool_expression: tok_identifier tok_eq tok_identifier  */
+#line 96 "bison.y"
                                                       {debugBison(24);}
-#line 1271 "bison.tab.c"
+#line 1286 "bison.tab.c"
+    break;
+
+  case 27: /* while_loop: tok_while_loop bool_expression tok_begin root tok_end  */
+#line 100 "bison.y"
+                                                                    {debugBison(24);}
+#line 1292 "bison.tab.c"
     break;
 
 
-#line 1275 "bison.tab.c"
+#line 1296 "bison.tab.c"
 
       default: break;
     }
@@ -1464,10 +1485,11 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 95 "bison.y"
+#line 102 "bison.y"
 
 
 void yyerror(const char* err) {
+    cout<<"At line: "<<yylineno<<" ";
     cerr << "\n" << err << endl;
 }
 
@@ -1479,7 +1501,7 @@ int main(int argc, char** argv) {
     if (yyin == NULL) { 
         yyin = stdin; // otherwise read from terminal
     }
-     
+
     int parserResult = yyparse();
     
     return EXIT_SUCCESS;

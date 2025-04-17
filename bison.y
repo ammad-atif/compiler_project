@@ -5,6 +5,7 @@
     using namespace std;
     extern int yyparse();
     extern int yylex();
+    extern int yylineno;
     extern FILE* yyin;
 
     void yyerror(const char* err);
@@ -45,6 +46,8 @@
 %token tok_if_else
 %token tok_end
 %token tok_begin
+%token tok_while_loop
+
 
 %left tok_plus tok_minus
 %left tok_mult tok_div tok_mod 
@@ -57,6 +60,7 @@ root: /* empty */				{debugBison(1);}
     | print root                 {debugBison(2);}
     | assignment root            {debugBison(3);}
     | if_else root               {debugBison(4);}
+    | while_loop root             {debugBison(4);}
     ;
 
 print: tok_print tok_identifier  {debugBison(5);}
@@ -92,9 +96,13 @@ bool_expression: tok_identifier tok_gt tok_identifier {debugBison(20);}
                | tok_identifier tok_eq tok_identifier {debugBison(24);}
     ;
 
+
+while_loop:  tok_while_loop bool_expression tok_begin root tok_end  {debugBison(24);}
+    ;
 %%
 
 void yyerror(const char* err) {
+    cout<<"At line: "<<yylineno<<" ";
     cerr << "\n" << err << endl;
 }
 
@@ -106,7 +114,7 @@ int main(int argc, char** argv) {
     if (yyin == NULL) { 
         yyin = stdin; // otherwise read from terminal
     }
-     
+
     int parserResult = yyparse();
     
     return EXIT_SUCCESS;

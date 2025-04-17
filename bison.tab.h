@@ -74,7 +74,8 @@ extern int yydebug;
     tok_eq = 275,                  /* tok_eq  */
     tok_if_else = 276,             /* tok_if_else  */
     tok_end = 277,                 /* tok_end  */
-    tok_begin = 278                /* tok_begin  */
+    tok_begin = 278,               /* tok_begin  */
+    tok_while_loop = 279           /* tok_while_loop  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -83,13 +84,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 21 "bison.y"
+#line 22 "bison.y"
 
 	char *identifier;
 	char *string_literal;
 	double double_literal;
 
-#line 93 "bison.tab.h"
+#line 94 "bison.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

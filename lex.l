@@ -23,6 +23,8 @@ using namespace std;
 
 "end"   {lex_output("tok_end"); return tok_end;}
 
+"@loop" {lex_output("tok_while_loop"); return tok_while_loop;}
+
 "@?"  {lex_output("tok_if_else"); return tok_if_else;}
 
 "yes"    {lex_output("tok_yes"); return tok_yes;}
