@@ -19,6 +19,12 @@ using namespace std;
 
 "print"  {lex_output("tok_print"); return tok_print;}
 
+"begin"  {lex_output("tok_begin"); return tok_begin;}
+
+"end"   {lex_output("tok_end"); return tok_end;}
+
+"@?"  {lex_output("tok_if_else"); return tok_if_else;}
+
 "yes"    {lex_output("tok_yes"); return tok_yes;}
 
 "no"     {lex_output("tok_no"); return tok_no;}

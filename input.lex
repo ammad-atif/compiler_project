@@ -4,3 +4,20 @@ a <- 10
 a <- b plus c minus 7.198 mod 122222
 
 print a
+
+@? a gt b
+yes
+begin
+a <- 5 plus 5
+print a
+ @? a gt b
+ yes
+ begin
+ print b
+ end
+ no 
+ begin
+
+ end
+end
+

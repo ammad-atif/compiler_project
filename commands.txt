@@ -20,7 +20,9 @@ git config
 git status
 git add
 git commit
-git branch #use -d for deletion of it as well
+git branch #use -d for deletion of it as well -r for remote
 git checkout
 git log
 gut merge branch_name
+git reset HEAD~
+git branch --unset-upstream
